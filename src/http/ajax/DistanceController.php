@@ -4,12 +4,15 @@
 namespace TD\http\ajax;
 
 
+use TD\services\GoogleDistanceCalculator;
+
 class DistanceController  extends AjaxBaseController
 {
     function calculate()
     {
-        
-        $this->respond->script(json_encode(array('hello'=>'world')));
+        $calculator = new GoogleDistanceCalculator();
+        $result = $calculator->calculate($_REQUEST['fromZip'],$_REQUEST['toZip']);
+        $this->respond->script(json_encode($result));
         return $this->respond;
     }
 

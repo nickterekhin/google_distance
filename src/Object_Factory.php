@@ -25,15 +25,20 @@ class Object_Factory
         return self::$instance;
     }
 
-    function getObject($objectName)
+    function getObject($objectName,$isAjax=false)
     {
         if(isset($objectName))
         {
-
             $objectName = preg_replace('/_|-/',' ',$objectName);
             $objectName = preg_replace('/\s+/','_',ucwords($objectName));
 
-            $r = new ReflectionClass('TD\http\Controller' . $objectName);
+
+
+            if($isAjax)
+                $r = new ReflectionClass('TD\http\ajax\\' . $objectName.'Controller');
+            else
+                $r = new ReflectionClass('TD\http\\' . $objectName.'Controller');
+
             /** @var Controller $manager_object */
             $manager_object = ($r->newInstanceWithoutConstructor());
             return $manager_object->getInstance();

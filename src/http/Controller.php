@@ -7,9 +7,8 @@ namespace TD\http;
 abstract class Controller
 {
     private static $_instances = array();
-    protected function __construct(){
 
-    }
+
     public static function getInstance() {
         $class = get_called_class();
         if (!isset(self::$_instances[$class])) {
@@ -48,5 +47,6 @@ abstract class Controller
 
         return $ret_obj;
     }
+
 
 }

@@ -4,6 +4,8 @@ include 'ClassLoader.php';
 $loader = new ClassLoader();
 $loader->register();
 
+include 'config.php';
+
 function isAjax()
 {          $headers = apache_request_headers();
     return (isset($headers['X-Requested-With']) && $headers['X-Requested-With'] == 'XMLHttpRequest');

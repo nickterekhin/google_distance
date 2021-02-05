@@ -6,8 +6,6 @@ define("BASEDIR", dirname(__FILE__));
 
 include 'includes/init.php';
 
-
-
 if(isset($argc) && $argc>1) {
     array_shift($argv);
     parse_str(implode('&',$argv),$_REQUEST);

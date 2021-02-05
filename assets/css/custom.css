@@ -1,0 +1,10 @@
+#validate-result{
+    display:none;
+}
+
+.td-loader {
+    display: none;
+    position: relative;
+    font-size: 24px;
+    margin-right: 10px;
+}

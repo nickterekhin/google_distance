@@ -32,14 +32,15 @@
         prototype:{
             init:function () {
                 let _self = this;
-                let errors =[];
+
                 _self.action.on('click',function(){
-                    console.log(_self.$fromZip.val().length);
+                    let errors =[];
+                    _self.$validate.hide();
                     if (_self.$fromZip.val().length>7 || _self.$toZip.val().length>7)
                     {
                         errors.push('ZipCode length can\'t be more then 7 numbers');
                     }
-                    if (_self.$fromZip.val().length===0 && _self.$toZip.val().length===0)
+                    if (_self.$fromZip.val().length===0 || _self.$toZip.val().length===0)
                     {
                         errors.push("FromZip and ToZip field are required!");
                     }
@@ -50,6 +51,7 @@
                     else
                     {
                         $.each(errors,function(i,v){
+                            _self.$validate.show();
                             _self.$validate.text(v).append('<br>');
                         });
 
@@ -67,6 +69,12 @@
                 method: "POST",
                 url: 'index.php?p=Distance&a=driver',
                 data: {id:1,cmd:'calculate',fromZip:obj.$fromZip.val(),toZip:obj.$toZip.val()},
+                beforeSend:function(){
+                    $("#loader").show();
+                },
+                complete:function(){
+                    $("#loader").hide();
+                },
                 success: function (data, states, jqXHR) {
                     let destination = $.parseJSON(data);
                     obj.$result_section.empty();
@@ -80,9 +88,9 @@
         requestOut:function(data)
         {
             let html = '';
-            html+='<table class="distance-result">';
-            html+='<tr><th>From</th><th>To</th><th>Distance</th></tr>';
-            html+='<tr><td>'+data.origin_addresses[0]+'</td><td>'+data.destination_addresses[0]+'</td><td>'+((data.rows[0].elements[0].status==='OK')?data.rows[0].elements[0].distance.value:data.rows[0].elements[0].status)+'</td></tr>'
+            html+='<table class="table">';
+            html+='<thead><tr><th scope="col">From</th><th scope="col">To</th><th scope="col">Distance (km)</th></tr></thead>';
+            html+='<tbody><tr><td>'+data.origin_addresses[0]+'</td><td>'+data.destination_addresses[0]+'</td><td>'+((data.rows[0].elements[0].status==='OK')?data.rows[0].elements[0].distance.value:data.rows[0].elements[0].status)+'</td></tr></tbody>'
             html+='</table>';
             return html;
 
